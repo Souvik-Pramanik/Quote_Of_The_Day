@@ -26,7 +26,10 @@ export default async (req, res) => {
           'Authorization': `Bearer d9efc5c19c4876b2ee43d19af4dd2c46`,
         },
       });
-      
+      res.status(200).json(response.data);
+    } catch (error) {
+      res.status(500).json({ message: 'Error fetching quotes', error: error.message });
+    }
   } else {
     res.status(404).json({ message: 'Route not found' });
   }
