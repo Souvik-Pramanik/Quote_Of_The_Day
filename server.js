@@ -11,14 +11,15 @@ app.get('/api/quote/search', async (req, res) => {
     const apiUrl = `https://favqs.com/api/quotes/?filter=${encodeURIComponent(author)}&type=author`;
 
     try {
+        // Forward the request to FavQs with the authorization token
         const response = await axios.get(apiUrl, {
             headers: {
                 'Authorization': `Token token="d9efc5c19c4876b2ee43d19af4dd2c46"`
             }
         });
-        res.json(response.data);
+        res.json(response.data); // Send the data back to the frontend
     } catch (error) {
-        console.error('Error fetching quote by author:', error.response.data);
+        console.error('Error fetching quote by author:', error.response ? error.response.data : error.message);
         res.status(500).json({ error: 'Error fetching quote by author' });
     }
 });
