@@ -20,8 +20,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function searchQuote(author) {
     try {
-      const response = await fetch(`/api/quote/search?author=${author}`);
+      // Encode the author's name to handle spaces or special characters
+      const encodedAuthor = encodeURIComponent(author);
+      const response = await fetch(`/api/quote/search?author=${encodedAuthor}`);
       const data = await response.json();
+  
+      // Check if quotes are found
       if (data.quotes && data.quotes.length > 0) {
         const randomQuote = data.quotes[Math.floor(Math.random() * data.quotes.length)];
         quoteElm.textContent = randomQuote.body;
@@ -31,9 +35,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     } catch (error) {
       quoteElm.textContent = "An error occurred while fetching the quote.";
-      console.log(error);
+      console.log("Error fetching quote:", error);
     }
   }
+  
 
   document.getElementById("button").addEventListener("click", getQuote);
   document.getElementById("searchButton").addEventListener("click", () => {
