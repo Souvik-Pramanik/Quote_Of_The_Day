@@ -24,11 +24,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // Function to get a random quote or by author
   async function getQuote(author = "") {
     try {
-      // Use relative path as per Vercel configuration for API routes
       let url = "/api/quote";
 
-      // If searching by author, adjust the URL
-      if (author) {
+      // If searching by author, adjust the URL for searching
+      if (author && author.trim() !== "") {
         url = `/api/quote/search?author=${encodeURIComponent(author)}`;
       }
 
@@ -42,16 +41,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const data = await response.json();
 
-      // If a single quote is returned, display it
-      if (data.quote) {
-        quoteElm.textContent = data.quote.body;
-        authorElm.textContent = `- ${data.quote.author}`;
-      } 
-      // Handle search results for multiple quotes
-      else if (data.quotes && data.quotes.length > 0) {
+      // If searching for an author and quotes found, display one of them
+      if (author && data.quotes && data.quotes.length > 0) {
         const randomQuote = data.quotes[Math.floor(Math.random() * data.quotes.length)];
         quoteElm.textContent = randomQuote.body;
         authorElm.textContent = `- ${randomQuote.author}`;
+      } 
+      // If no author is provided or no quotes found, handle accordingly
+      else if (!author && data.quote) {
+        quoteElm.textContent = data.quote.body;
+        authorElm.textContent = `- ${data.quote.author}`;
       } else {
         quoteElm.textContent = "No quotes found for the given author.";
         authorElm.textContent = "";
@@ -67,14 +66,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Event listeners for buttons
-  button.addEventListener("click", () => getQuote());  // Random quote button
+  // Event listener for random quote button
+  button.addEventListener("click", () => getQuote()); 
 
   // Author search button
   searchButton.addEventListener("click", () => {
     const author = authorInput.value.trim();
     if (author) {
-      getQuote(author);  // Fetch quote by author
+      getQuote(author);  // Fetch quotes by author
     } else {
       quoteElm.textContent = "Please enter an author name.";
       authorElm.textContent = "";
