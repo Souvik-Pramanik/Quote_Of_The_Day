@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let url = "/api/quote";
         
         if (author && author.trim() !== "") {
-            url = `https://api.allorigins.win/raw?url=https://favqs.com/api/quotes/?filter=${encodeURIComponent(author)}&type=author`;
+            url = `/api/quote/search?author=${encodeURIComponent(author)}`;
             console.log(`Searching for quotes by author: ${author}`);
         }
 
