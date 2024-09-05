@@ -26,15 +26,7 @@ export default async (req, res) => {
           'Authorization': `Bearer d9efc5c19c4876b2ee43d19af4dd2c46`,
         },
       });
-      if (response.data && response.data.quotes.length > 0) {
-        res.status(200).json({ quotes: response.data.quotes });
-      } else {
-        res.status(404).json({ message: "No quotes found" });
-      }
-    } catch (error) {
-      res.status(500).json({ message: 'Error fetching quotes', error: error.message });
-    }
-  }
+      
   } else {
     res.status(404).json({ message: 'Route not found' });
   }
