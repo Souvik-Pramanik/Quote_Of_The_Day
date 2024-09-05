@@ -29,6 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // If searching by author, adjust the URL for searching
       if (author && author.trim() !== "") {
         url = `/api/quote/search?author=${encodeURIComponent(author)}`;
+        console.log(`Searching for quotes by author: ${author}`); // Log the search request
       }
 
       // Fetch the data from the API
@@ -40,6 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       const data = await response.json();
+      console.log("API Response:", data); // Log API response for debugging
 
       // If searching for an author and quotes found, display one of them
       if (author && data.quotes && data.quotes.length > 0) {
