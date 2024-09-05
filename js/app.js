@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "#b8b5ff",
   ];
 
+  // Function to get a random quote or by author
   async function getQuote(author = "") {
     try {
       let url = "/api/quote";
@@ -30,7 +31,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const response = await fetch(url);
 
-      // Log the full response for debugging
       const responseText = await response.text();
       console.log("Raw API Response:", responseText);
 
@@ -41,11 +41,19 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = JSON.parse(responseText);
       console.log("Parsed API Response:", data);
 
+      // Check if quotes by author are returned
       if (author && data.quotes && data.quotes.length > 0) {
         const randomQuote = data.quotes[Math.floor(Math.random() * data.quotes.length)];
         quoteElm.textContent = randomQuote.body;
         authorElm.textContent = `- ${randomQuote.author}`;
-      } else if (!author && data.quote) {
+      } 
+      // Handle case where QOTD is returned instead of author quotes
+      else if (author && data.quote && !data.quotes) {
+        quoteElm.textContent = "No quotes found for the given author.";
+        authorElm.textContent = "";
+      } 
+      // Random quote fallback (if no author is specified)
+      else if (!author && data.quote) {
         quoteElm.textContent = data.quote.body;
         authorElm.textContent = `- ${data.quote.author}`;
       } else {
@@ -53,6 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
         authorElm.textContent = "";
       }
 
+      // Update background color
       svgFrameElm.innerHTML = `<rect x="10" y="38" width="514.577" height="195.012" fill="${colors[Math.floor(Math.random() * colors.length)]}"></rect>`;
     } catch (error) {
       quoteElm.textContent = "An error occurred while fetching the quote.";
@@ -61,6 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Event listeners
   button.addEventListener("click", () => getQuote());
   searchButton.addEventListener("click", () => {
     const author = authorInput.value.trim();
@@ -72,5 +82,5 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  getQuote();
+  getQuote(); // Load a random quote on page load
 });
