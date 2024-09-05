@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const searchButton = document.getElementById("searchButton");
   const authorInput = document.getElementById("authorInput");
 
-  // Colors for the background
   const colors = [
     "#eeb76b",
     "#FFC720",
@@ -20,7 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
     "#b8b5ff",
   ];
 
-  // Function to get a random quote or by author
   async function getQuote(author = "") {
     try {
       let url = "/api/quote"; // Calls the backend API
@@ -51,7 +49,6 @@ document.addEventListener("DOMContentLoaded", () => {
         authorElm.textContent = "";
       }
 
-      // Ensure the background color is applied
       svgFrameElm.innerHTML = `<rect x="10" y="38" width="514.577" height="195.012" fill="${colors[Math.floor(Math.random() * colors.length)]}"></rect>`;
     } catch (error) {
       quoteElm.textContent = "An error occurred while fetching the quote.";
