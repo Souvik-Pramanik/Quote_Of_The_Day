@@ -20,14 +20,14 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
 
   async function getQuote(author = "") {
-    try {
-      let url = "/api/quote"; // Calls the backend API
-      
-      if (author && author.trim() !== "") {
-        url = `/api/quote/search?author=${encodeURIComponent(author)}`;
-        console.log(`Searching for quotes by author: ${author}`);
-      }
+    let url = "/api/quote"; // Calls the backend API
+    
+    if (author && author.trim() !== "") {
+      url = `/api/quote/search?author=${encodeURIComponent(author)}`;
+      console.log(`Searching for quotes by author: ${author}`);
+    }
 
+    try {
       const response = await fetch(url);
 
       if (!response.ok) {
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await response.json();
       console.log("API Response:", data);
 
-      if (author && data.quotes && data.quotes.length > 0) {
+      if (data.quotes && data.quotes.length > 0) {
         const randomQuote = data.quotes[Math.floor(Math.random() * data.quotes.length)];
         quoteElm.textContent = randomQuote.body;
         authorElm.textContent = `- ${randomQuote.author}`;
